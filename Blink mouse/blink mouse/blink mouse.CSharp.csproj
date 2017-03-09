@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\CompleteCameraController.cs" />
     <Compile Include="Assets\Scripts\Controller2D.cs" />
+    <Compile Include="Assets\Scripts\PlatformControler.cs" />
     <Compile Include="Assets\Scripts\PlayerPhysics.cs" />
     <Compile Include="Assets\Scripts\RaycastController.cs" />
   </ItemGroup>
