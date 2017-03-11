@@ -1,16 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 [RequireComponent(typeof(Controller2D))]
-public class PlayerPhysics : MonoBehaviour {
+public class PlayerPhysics : MonoBehaviour
+{
 
+
+
+    Teleporter tel;
     public static Animator anim;
 
-    public float maxJumpHeight=4;
+    public float maxJumpHeight = 4;
     public float minJumpHeight = 1;
     public float timeToJumpApex = .4f;
-    float accelerationTimeAirborne=.3f;
-    float accelerationTimeGrounded=.1f;
-    float moveSpeed=2;
+    float accelerationTimeAirborne = .3f;
+    float accelerationTimeGrounded = .1f;
+    float moveSpeed = 2;
 
     public Vector2 wallJumpClimb;
     public Vector2 wallJumpOff;
@@ -28,48 +32,63 @@ public class PlayerPhysics : MonoBehaviour {
 
     Controller2D controller;
 
+   
+
     void Start()
     {
-        anim = GetComponent<Animator>();
+        tel = FindObjectOfType<Teleporter>();
 
+
+        anim = GetComponent<Animator>();
+        
         controller = GetComponent<Controller2D>();
 
         gravity = -(2 * maxJumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
-        minJumpVelocity=Mathf.Sqrt(2*Mathf.Abs(gravity)*minJumpHeight);
+        minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
         print("Gravity" + gravity + " Jump Velocity" + maxJumpVelocity);
+    } 
+    void FixedUpdate()
+    {
+        transform.position = new Vector3(transform.position.x, transform.position.y, Mathf.Clamp(transform.position.z, 1, 1));
     }
-
     void Update()
     {
+
+        
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        int wallDirX = (controller.collisions.left)?-1:1;
+        int wallDirX = (controller.collisions.left) ? -1 : 1;
 
         float targetVelocityX = input.x * moveSpeed;
         velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
 
         bool wallSliding = false;
 
-        if((controller.collisions.left||controller.collisions.right)&&!controller.collisions.below && velocity.y < 0)
+        if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0)
         {
+            anim.SetBool("IsSticked", true);
+
             wallSliding = true;
 
             if (velocity.y < -wallSlideSpeedMax)
             {
+               
                 velocity.y = -wallSlideSpeedMax;
             }
 
             if (timeToWallUnstick > 0)
             {
+              
                 velocityXSmoothing = 0;
                 velocity.x = 0;
 
                 if (input.x != wallDirX && input.x != 0)
-                {
+                {  
                     timeToWallUnstick -= Time.deltaTime;
                 }
                 else
                 {
+                    GetComponent<SpriteRenderer>().flipX = true;
                     timeToWallUnstick = wallStickTime;
                 }
             }
@@ -77,7 +96,17 @@ public class PlayerPhysics : MonoBehaviour {
             {
                 timeToWallUnstick = wallStickTime;
             }
+            if (controller.collisions.left)
+            {
+                GetComponent<SpriteRenderer>().flipX = false;
+            }
         }
+        else
+        {
+            anim.SetBool("IsSticked", false);
+        }
+
+       
 
         if (controller.collisions.below)
         {
@@ -88,17 +117,19 @@ public class PlayerPhysics : MonoBehaviour {
         {
             GetComponent<SpriteRenderer>().flipX = true;
             anim.SetBool("IsMoving", true);
-        } else if (input.x == 1 && velocity.y == 0)
+        }
+        else if (input.x == 1 && velocity.y == 0)
         {
             GetComponent<SpriteRenderer>().flipX = false;
             anim.SetBool("IsMoving", true);
-        } else
+        }
+        else
         {
             anim.SetBool("IsMoving", false);
         }
-    
 
-        if(Input.GetKeyDown(KeyCode.Space))
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (wallSliding)
             {
@@ -124,25 +155,37 @@ public class PlayerPhysics : MonoBehaviour {
                 anim.SetBool("IsJumping", true);
             }
         }
-        if (Input.GetKeyUp(KeyCode.Space)){
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
             if (velocity.y > minJumpVelocity)
             {
                 velocity.y = minJumpVelocity;
             }
         }
-      
+
 
         velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime,input);
+        controller.Move(velocity * Time.deltaTime, input);
 
 
         if (controller.collisions.above || controller.collisions.below)
         {
             velocity.y = 0;
-           
+
         }
-       
+        if (Input.GetMouseButtonDown(0))
+          {
+            if (tel.cantTeleport==false)
+            {
+                Vector2 pos = GameObject.Find("TeleportLocation").transform.position;
+                transform.position = (pos);
+            }
+          }
+     
+
+        
 
     }
-}
+  
 
+}
