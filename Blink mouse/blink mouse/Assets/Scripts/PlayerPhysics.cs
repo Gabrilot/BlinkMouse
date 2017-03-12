@@ -5,7 +5,6 @@ public class PlayerPhysics : MonoBehaviour
 {
 
 
-
     Teleporter tel;
     public static Animator anim;
 
@@ -38,7 +37,6 @@ public class PlayerPhysics : MonoBehaviour
     {
         tel = FindObjectOfType<Teleporter>();
 
-
         anim = GetComponent<Animator>();
         
         controller = GetComponent<Controller2D>();
@@ -54,8 +52,8 @@ public class PlayerPhysics : MonoBehaviour
     }
     void Update()
     {
+       
 
-        
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         int wallDirX = (controller.collisions.left) ? -1 : 1;
 
@@ -173,19 +171,32 @@ public class PlayerPhysics : MonoBehaviour
             velocity.y = 0;
 
         }
+
         if (Input.GetMouseButtonDown(0))
+        {
+            tel.GetComponent<SpriteRenderer>().enabled = true;
+        }
+
+        if (Input.GetMouseButtonUp(0))
           {
             if (tel.cantTeleport==false)
             {
-                Vector2 pos = GameObject.Find("TeleportLocation").transform.position;
-                transform.position = (pos);
+                anim.SetBool("IsDissapearing", true);
+                Invoke("Teleporting", 0.2f);
+                
             }
-          }
+            tel.GetComponent<SpriteRenderer>().enabled = false;
+        }
      
 
         
 
     }
-  
+  void Teleporting()
+    {
+        anim.SetBool("IsDissapearing", false);
+        Vector2 pos = GameObject.Find("TeleportLocation").transform.position;
+        transform.position = (pos);
+    }
 
 }

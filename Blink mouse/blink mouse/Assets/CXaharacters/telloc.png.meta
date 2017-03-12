@@ -1,15 +1,12 @@
 fileFormatVersion: 2
-guid: 5a9770c732a81324b8bef8fe92787df6
-timeCreated: 1489329069
+guid: 3a043c51da67f1a49a11e37f363b61a2
+timeCreated: 1489325808
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: soric_disteleport_0
-    21300002: soric_disteleport_1
-    21300004: soric_disteleport_2
-    21300006: soric_disteleport_3
-    21300008: soric_disteleport_4
-    21300010: soric_disteleport_5
+    21300000: telloc_0
+    21300002: telloc_1
+    21300004: telloc_2
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -59,20 +56,20 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: soric_disteleport_0
+      name: telloc_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 32
         height: 32
-      alignment: 9
+      alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: soric_disteleport_1
+      name: telloc_1
       rect:
         serializedVersion: 2
         x: 32
@@ -85,49 +82,10 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: soric_disteleport_2
+      name: telloc_2
       rect:
         serializedVersion: 2
         x: 64
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: soric_disteleport_3
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: soric_disteleport_4
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: soric_disteleport_5
-      rect:
-        serializedVersion: 2
-        x: 160
         y: 0
         width: 32
         height: 32

@@ -9,9 +9,9 @@ public class Teleporter : MonoBehaviour
 
     void Start()
     {
-     
-         pivot = new GameObject("Teleport location").transform;
-        transform.parent = pivot;
+        GetComponent<SpriteRenderer>().enabled = false;
+        pivot = new GameObject("Teleport location").transform;
+         transform.parent = pivot;
     }
 
     void Update()
