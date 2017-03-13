@@ -6,12 +6,15 @@ public class Teleporter : MonoBehaviour
     public bool cantTeleport;
     public Transform target;
     private Transform pivot;
+    private bool foReal;
 
     void Start()
     {
         GetComponent<SpriteRenderer>().enabled = false;
         pivot = new GameObject("Teleport location").transform;
-         transform.parent = pivot;
+        pivot.transform.position = GameObject.Find("Soric").transform.position;
+        transform.parent = pivot;
+        
     }
 
     void Update()
@@ -23,14 +26,18 @@ public class Teleporter : MonoBehaviour
         pivot.position = target.position;
         pivot.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
         Debug.Log("Hit");
-      cantTeleport  = true;
+        cantTeleport = true;
+        foReal = true;
+  
     }
     void OnTriggerExit2D(Collider2D other)
     {
+       
         Debug.Log("Out");
         cantTeleport = false;
+       
     }
 }

@@ -8,12 +8,12 @@ public class PlayerPhysics : MonoBehaviour
     Teleporter tel;
     public static Animator anim;
 
-    public float maxJumpHeight = 4;
-    public float minJumpHeight = 1;
+    public float maxJumpHeight = .2f;
+    public float minJumpHeight = .1f;
     public float timeToJumpApex = .4f;
     float accelerationTimeAirborne = .3f;
-    float accelerationTimeGrounded = .1f;
-    float moveSpeed = 2;
+    float accelerationTimeGrounded = .05f;
+    float moveSpeed = 1.5f;
 
     public Vector2 wallJumpClimb;
     public Vector2 wallJumpOff;
@@ -28,6 +28,9 @@ public class PlayerPhysics : MonoBehaviour
     float minJumpVelocity;
     Vector3 velocity;
     float velocityXSmoothing;
+
+    public float coolDown = 1;
+    private float CoolDownTimer;
 
     Controller2D controller;
 
@@ -172,24 +175,35 @@ public class PlayerPhysics : MonoBehaviour
 
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (CoolDownTimer > 0)
         {
-            tel.GetComponent<SpriteRenderer>().enabled = true;
+            CoolDownTimer -= Time.deltaTime;
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (CoolDownTimer < 0)
+        {
+            CoolDownTimer = 0;
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            tel.GetComponent<SpriteRenderer>().enabled = true;
+        }else
+        {
+            tel.GetComponent<SpriteRenderer>().enabled = false;
+        }
+
+        if (Input.GetMouseButtonUp(0)&&CoolDownTimer==0)
           {
             if (tel.cantTeleport==false)
             {
+                CoolDownTimer = coolDown;
                 anim.SetBool("IsDissapearing", true);
                 Invoke("Teleporting", 0.2f);
                 
             }
             tel.GetComponent<SpriteRenderer>().enabled = false;
         }
-     
-
-        
 
     }
   void Teleporting()
