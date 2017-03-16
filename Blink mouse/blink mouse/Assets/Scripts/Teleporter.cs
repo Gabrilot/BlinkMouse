@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Teleporter : MonoBehaviour
+public class Teleporter : RaycastController
 {
+    public LayerMask TeleportnMask;
+
     public bool cantTeleport;
     public Transform target;
     private Transform pivot;
-    private bool foReal;
 
-    void Start()
+   public override void Start()
     {
+        base.Start();
         GetComponent<SpriteRenderer>().enabled = false;
         pivot = new GameObject("Teleport location").transform;
         pivot.transform.position = GameObject.Find("Soric").transform.position;
@@ -19,25 +21,78 @@ public class Teleporter : MonoBehaviour
 
     void Update()
     {
+        UpdateRaycastOrigins();
+        
         Vector3 v3Pos = Camera.main.WorldToScreenPoint(target.position);
         v3Pos = Input.mousePosition - v3Pos;
         float angle = Mathf.Atan2(v3Pos.y, v3Pos.x) * Mathf.Rad2Deg;
-
+      
         pivot.position = target.position;
         pivot.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        CheckColision(v3Pos);
+
+
     }
-    void OnTriggerStay2D(Collider2D other)
+
+
+    void CheckColision(Vector3 v3Pos)
     {
-        Debug.Log("Hit");
-        cantTeleport = true;
-        foReal = true;
-  
-    }
-    void OnTriggerExit2D(Collider2D other)
-    {
-       
-        Debug.Log("Out");
-        cantTeleport = false;
-       
-    }
+        float directionX = Mathf.Sign(v3Pos.x);
+        float directionY = Mathf.Sign(v3Pos.y);
+        //
+        if (v3Pos.y != 0)
+        {
+            float rayLength = Mathf.Abs(v3Pos.y) + skinWidth;
+            for (int i = 0; i < verticalRayCount; i++)
+            {
+                Vector2 rayOrigin = (directionY == -1) ? raycastOrigins.bottomLeft : raycastOrigins.topLeft;
+                rayOrigin += Vector2.right * (verticalRaySpacing * i);
+                RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, TeleportnMask);
+                Debug.DrawRay(rayOrigin, Vector2.up * directionY, Color.red);
+                if (hit)
+                {
+                    if (hit.distance == 0)
+                    {
+                        cantTeleport = true;
+                        Debug.Log("Hit");
+                    }
+                    else
+                    {
+                        cantTeleport = false;
+                        Debug.Log("Out");
+                    }
+                }
+            }
+        }
+        //
+        if (v3Pos.x != 0)
+        {
+            float rayLength = Mathf.Abs(v3Pos.x) + skinWidth;
+
+                for (int i = 0; i < horizontalRayCount; i++)
+                {
+                    Vector2 rayOrigin = (directionX == -1) ? raycastOrigins.bottomLeft : raycastOrigins.bottomRight;
+                    rayOrigin += Vector2.up * (horizontalRaySpacing * i);
+                    RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, collisionMask);
+                    Debug.DrawRay(rayOrigin, Vector2.right * directionX, Color.red);
+
+                    if (hit)
+                    {
+                        if (hit.distance == 0)
+                        {
+                            cantTeleport = true;
+                            Debug.Log("Hit");
+                        }
+                        else
+                        {
+                            cantTeleport = false;
+                            Debug.Log("Out");
+                        }
+
+                    }
+                }
+            }
+        }
+   
 }

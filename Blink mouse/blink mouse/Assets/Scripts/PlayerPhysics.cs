@@ -206,11 +206,15 @@ public class PlayerPhysics : MonoBehaviour
         }
 
     }
-  void Teleporting()
+    void Teleporting()
     {
         anim.SetBool("IsDissapearing", false);
-        Vector2 pos = GameObject.Find("TeleportLocation").transform.position;
-        transform.position = (pos);
+        if (tel.cantTeleport == false)
+        {
+            Vector2 pos = GameObject.Find("TeleportLocation").transform.position;
+            transform.position = (pos);
+        }
+        else Debug.Log("Cant teleport there");
     }
 
 }
