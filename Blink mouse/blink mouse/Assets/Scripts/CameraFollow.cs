@@ -23,6 +23,7 @@ public class CameraFollow : MonoBehaviour {
 
     void Start()
     {
+        Cursor.visible = false;
         focusArea = new FocusArea(target.collider.bounds, focusAreaSize);
     }
 

@@ -10,7 +10,7 @@ public class RaycastController : MonoBehaviour {
     [HideInInspector]
     public int horizontalRayCount;
     [HideInInspector]
-    public int verticalRayCount ;
+    public int verticalRayCount;
 
     [HideInInspector]
     public float horizontalRaySpacing;

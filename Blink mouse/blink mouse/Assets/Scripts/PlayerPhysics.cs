@@ -5,16 +5,15 @@ public class PlayerPhysics : MonoBehaviour
 {
 
 
-
     Teleporter tel;
     public static Animator anim;
 
-    public float maxJumpHeight = 4;
-    public float minJumpHeight = 1;
+    public float maxJumpHeight = .2f;
+    public float minJumpHeight = .1f;
     public float timeToJumpApex = .4f;
     float accelerationTimeAirborne = .3f;
-    float accelerationTimeGrounded = .1f;
-    float moveSpeed = 2;
+    float accelerationTimeGrounded = .05f;
+    float moveSpeed = 1.5f;
 
     public Vector2 wallJumpClimb;
     public Vector2 wallJumpOff;
@@ -30,6 +29,9 @@ public class PlayerPhysics : MonoBehaviour
     Vector3 velocity;
     float velocityXSmoothing;
 
+    public float coolDown = 1;
+    private float CoolDownTimer;
+
     Controller2D controller;
 
    
@@ -37,7 +39,6 @@ public class PlayerPhysics : MonoBehaviour
     void Start()
     {
         tel = FindObjectOfType<Teleporter>();
-
 
         anim = GetComponent<Animator>();
         
@@ -54,8 +55,8 @@ public class PlayerPhysics : MonoBehaviour
     }
     void Update()
     {
+       
 
-        
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         int wallDirX = (controller.collisions.left) ? -1 : 1;
 
@@ -173,19 +174,47 @@ public class PlayerPhysics : MonoBehaviour
             velocity.y = 0;
 
         }
-        if (Input.GetMouseButtonDown(0))
-          {
-			if (Teleporter.cantTeleport==false)
-            {
-                Vector2 pos = GameObject.Find("TeleportLocation").transform.position;
-                transform.position = (pos);
-            }
-          }
-     
 
-        
+        if (CoolDownTimer > 0)
+        {
+            CoolDownTimer -= Time.deltaTime;
+        }
+
+        if (CoolDownTimer < 0)
+        {
+            CoolDownTimer = 0;
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            tel.GetComponent<SpriteRenderer>().enabled = true;
+        }else
+        {
+            tel.GetComponent<SpriteRenderer>().enabled = false;
+        }
+
+        if (Input.GetMouseButtonUp(0)&&CoolDownTimer==0)
+          {
+            if (tel.cantTeleportX==false && tel.cantTeleportY == false)
+            {
+                CoolDownTimer = coolDown;
+                anim.SetBool("IsDissapearing", true);
+                Invoke("Teleporting", 0.2f);
+                
+            }
+            tel.GetComponent<SpriteRenderer>().enabled = false;
+        }
 
     }
-  
+    void Teleporting()
+    {
+        anim.SetBool("IsDissapearing", false);
+        if (tel.cantTeleportY == false && tel.cantTeleportX == false)
+        {
+            Vector2 pos = GameObject.Find("TeleportLocation").transform.position;
+            transform.position = (pos);
+        }
+        else Debug.Log("Cant teleport there");
+    }
 
 }

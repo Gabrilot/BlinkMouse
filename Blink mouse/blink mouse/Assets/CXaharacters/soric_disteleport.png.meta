@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 5a9770c732a81324b8bef8fe92787df6
-timeCreated: 1489256618
+timeCreated: 1489329069
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -114,12 +114,12 @@ TextureImporter:
       name: soric_disteleport_4
       rect:
         serializedVersion: 2
-        x: 137
-        y: 7
-        width: 13
-        height: 10
-      alignment: 9
-      pivot: {x: 0.48353624, y: 0.3577639}
+        x: 128
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
