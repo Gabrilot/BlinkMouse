@@ -195,7 +195,7 @@ public class PlayerPhysics : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0)&&CoolDownTimer==0)
           {
-            if (tel.cantTeleport==false)
+            if (tel.cantTeleportX==false && tel.cantTeleportY == false)
             {
                 CoolDownTimer = coolDown;
                 anim.SetBool("IsDissapearing", true);
@@ -209,7 +209,7 @@ public class PlayerPhysics : MonoBehaviour
     void Teleporting()
     {
         anim.SetBool("IsDissapearing", false);
-        if (tel.cantTeleport == false)
+        if (tel.cantTeleportY == false && tel.cantTeleportX == false)
         {
             Vector2 pos = GameObject.Find("TeleportLocation").transform.position;
             transform.position = (pos);

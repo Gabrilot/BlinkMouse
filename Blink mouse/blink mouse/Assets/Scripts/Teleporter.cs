@@ -4,10 +4,12 @@ using System.Collections;
 public class Teleporter : RaycastController
 {
     public LayerMask TeleportnMask;
-
-    public bool cantTeleport;
+    float lockPos = 0;
+    public bool cantTeleportX;
+    public bool cantTeleportY;
     public Transform target;
     private Transform pivot;
+    
 
    public override void Start()
     {
@@ -19,8 +21,10 @@ public class Teleporter : RaycastController
         
     }
 
-    void Update()
+    void FixedUpdate()
     {
+        cantTeleportY = false;
+        cantTeleportX = false;
         UpdateRaycastOrigins();
         
         Vector3 v3Pos = Camera.main.WorldToScreenPoint(target.position);
@@ -29,7 +33,7 @@ public class Teleporter : RaycastController
       
         pivot.position = target.position;
         pivot.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-
+        transform.rotation = Quaternion.Euler(lockPos, lockPos, lockPos);
         CheckColision(v3Pos);
 
 
@@ -40,6 +44,7 @@ public class Teleporter : RaycastController
     {
         float directionX = Mathf.Sign(v3Pos.x);
         float directionY = Mathf.Sign(v3Pos.y);
+        
         //
         if (v3Pos.y != 0)
         {
@@ -54,13 +59,9 @@ public class Teleporter : RaycastController
                 {
                     if (hit.distance == 0)
                     {
-                        cantTeleport = true;
-                        Debug.Log("Hit");
-                    }
-                    else
-                    {
-                        cantTeleport = false;
-                        Debug.Log("Out");
+                        cantTeleportY = true;
+                        Debug.Log("Hit y");
+
                     }
                 }
             }
@@ -74,22 +75,17 @@ public class Teleporter : RaycastController
                 {
                     Vector2 rayOrigin = (directionX == -1) ? raycastOrigins.bottomLeft : raycastOrigins.bottomRight;
                     rayOrigin += Vector2.up * (horizontalRaySpacing * i);
-                    RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, collisionMask);
+                    RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, TeleportnMask);
                     Debug.DrawRay(rayOrigin, Vector2.right * directionX, Color.red);
 
                     if (hit)
                     {
                         if (hit.distance == 0)
                         {
-                            cantTeleport = true;
-                            Debug.Log("Hit");
-                        }
-                        else
-                        {
-                            cantTeleport = false;
-                            Debug.Log("Out");
-                        }
+                        cantTeleportX = true;
+                        Debug.Log("Hit x");
 
+                        }
                     }
                 }
             }
