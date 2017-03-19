@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 
 public class Death : MonoBehaviour {
-
+    
 	void OnTriggerEnter2D(Collider2D col)
     {
         if (col.transform.tag == "Player")
@@ -17,6 +17,5 @@ public class Death : MonoBehaviour {
     {
         int scene = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(scene, LoadSceneMode.Single);
-        Time.timeScale = 1;
     }
 }

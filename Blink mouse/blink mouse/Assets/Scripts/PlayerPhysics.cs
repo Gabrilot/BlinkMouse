@@ -36,18 +36,24 @@ public class PlayerPhysics : MonoBehaviour
 
     Controller2D controller;
 
+    public Vector2 respawnPoint;
+    public LevelManager gameLevelManager;
+
     void Start()
     {
+        respawnPoint = transform.position;
+
         tel = FindObjectOfType<Teleporter>();
 
         anim = GetComponent<Animator>();
-;
+
         controller = GetComponent<Controller2D>();
 
         gravity = -(2 * maxJumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
         minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
-       // print("Gravity" + gravity + " Jump Velocity" + maxJumpVelocity);
+        // print("Gravity" + gravity + " Jump Velocity" + maxJumpVelocity);
+        gameLevelManager = FindObjectOfType<LevelManager>();
     } 
     void FixedUpdate()
     {
@@ -214,6 +220,7 @@ public class PlayerPhysics : MonoBehaviour
         }
         
     }
+
     void Teleporting()
     {
         anim.SetBool("IsDissapearing", false);
@@ -226,4 +233,16 @@ public class PlayerPhysics : MonoBehaviour
         else Debug.Log("Cant teleport there");
     }
 
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if(col.tag == "DeathBox")
+        {
+            gameLevelManager.Respawn();
+        }
+
+        if (col.tag == "Checkpoint")
+        {
+            respawnPoint = col.transform.position;
+        }
+    }
 }
