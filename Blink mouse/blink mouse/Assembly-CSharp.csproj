@@ -46,9 +46,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\ButtonControl.cs" />
      <Compile Include="Assets\Death.cs" />
-     <Compile Include="Assets\Door.cs" />
+     <Compile Include="Assets\Scripts\ButtonControl.cs" />
      <Compile Include="Assets\Scripts\CameraFollow.cs" />
      <Compile Include="Assets\Scripts\CompleteCameraController.cs" />
      <Compile Include="Assets\Scripts\Controller2D.cs" />
