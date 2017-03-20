@@ -3,13 +3,16 @@ using System.Collections;
 
 public class Teleporter : RaycastController
 {
+    GameObject range1;
+    GameObject range2;
+    GameObject range3;
     public LayerMask TeleportnMask;
     float lockPos = 0;
     public bool cantTeleportX;
     public bool cantTeleportY;
     public Transform target;
-    private Transform pivot;
-    
+    public Transform pivot;
+    int i = 0;
 
    public override void Start()
     {
@@ -17,25 +20,47 @@ public class Teleporter : RaycastController
         GetComponent<SpriteRenderer>().enabled = false;
         pivot = new GameObject("Teleport location").transform;
         pivot.transform.position = GameObject.Find("Soric").transform.position;
+        range1 = GameObject.Find("Range1");
+        range2= GameObject.Find("Range2");
+        range3=GameObject.Find("Range3");
         transform.parent = pivot;
-        
+        range1.transform.parent = pivot;
+        range2.transform.parent = pivot;
+        range3.transform.parent = pivot;
+
     }
 
-    void FixedUpdate()
+    void Update()
     {
         cantTeleportY = false;
         cantTeleportX = false;
         UpdateRaycastOrigins();
-        
+       
         Vector3 v3Pos = Camera.main.WorldToScreenPoint(target.position);
         v3Pos = Input.mousePosition - v3Pos;
         float angle = Mathf.Atan2(v3Pos.y, v3Pos.x) * Mathf.Rad2Deg;
-      
+     
         pivot.position = target.position;
         pivot.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         transform.rotation = Quaternion.Euler(lockPos, lockPos, lockPos);
+        
         CheckColision(v3Pos);
 
+        if (Input.GetMouseButtonDown(1))
+        {
+            i++;
+            if (i == 1)
+            {
+                transform.position = GameObject.Find("Range1").transform.position;
+            }else if (i == 2)
+            {
+                transform.position = GameObject.Find("Range2").transform.position;
+            }else
+            {
+                i = 0;
+                transform.position = GameObject.Find("Range3").transform.position;
+            }
+        }
 
     }
 
@@ -60,7 +85,7 @@ public class Teleporter : RaycastController
                     if (hit.distance == 0)
                     {
                         cantTeleportY = true;
-                        Debug.Log("Hit y");
+                        //Debug.Log("Hit y");
 
                     }
                 }
@@ -83,7 +108,7 @@ public class Teleporter : RaycastController
                         if (hit.distance == 0)
                         {
                         cantTeleportX = true;
-                        Debug.Log("Hit x");
+                       // Debug.Log("Hit x");
 
                         }
                     }
