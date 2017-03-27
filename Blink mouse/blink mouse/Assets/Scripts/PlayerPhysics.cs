@@ -39,8 +39,13 @@ public class PlayerPhysics : MonoBehaviour
     public Vector2 respawnPoint;
     public LevelManager gameLevelManager;
 
+	public GameObject text;
+	public GameObject panel;
+
     void Start()
     {
+		text.SetActive (false);
+		panel.SetActive (false);
         respawnPoint = transform.position;
 
         tel = FindObjectOfType<Teleporter>();
@@ -244,5 +249,18 @@ public class PlayerPhysics : MonoBehaviour
         {
             respawnPoint = col.transform.position;
         }
+
+		/*if (col.tag == "TextBox") 
+		{
+			text.SetActive (true);
+			panel.SetActive (true);
+		}*/
     }
+
+	/*void OntTiggerExit2D(Collider2D col){
+		if (col.tag == "TextBox") {
+			text.SetActive (false);
+			panel.SetActive (false);
+		}
+	}*/
 }

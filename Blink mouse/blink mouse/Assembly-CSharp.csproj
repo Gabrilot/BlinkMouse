@@ -60,6 +60,7 @@
      <Compile Include="Assets\Scripts\RaycastController.cs" />
      <Compile Include="Assets\Scripts\SettingManager.cs" />
      <Compile Include="Assets\Scripts\Teleporter.cs" />
+     <Compile Include="Assets\Scripts\TextBox.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
