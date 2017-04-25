@@ -8,18 +8,15 @@ public class TextBox : MonoBehaviour {
 	public GameObject panel;
 	bool inText;
 	bool textVisible;
-	Teleporter teleport;
-	Controller2D soric;
-	PlayerPhysics soric1;
+
+
 
 	void Start () {
 		textVisible = false;
 		text.SetActive (false);
 		panel.SetActive (false);
 
-		teleport = FindObjectOfType<Teleporter> ();
-		soric = FindObjectOfType<Controller2D> ();
-		soric1 = FindObjectOfType<PlayerPhysics> ();
+
 	}
 
 	void Update () {

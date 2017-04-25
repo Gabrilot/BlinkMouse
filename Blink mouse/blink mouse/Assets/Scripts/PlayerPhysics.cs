@@ -59,6 +59,10 @@ public class PlayerPhysics : MonoBehaviour
         minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
         // print("Gravity" + gravity + " Jump Velocity" + maxJumpVelocity);
         gameLevelManager = FindObjectOfType<LevelManager>();
+
+		if (PlayerPrefs.HasKey("PlayerX")){ 
+		transform.position = new Vector3 (PlayerPrefs.GetFloat ("PlayerX"), PlayerPrefs.GetFloat ("PlayerY"), PlayerPrefs.GetFloat ("PlayerZ"));
+		}
     } 
     void FixedUpdate()
     {
@@ -248,19 +252,9 @@ public class PlayerPhysics : MonoBehaviour
         if (col.tag == "Checkpoint")
         {
             respawnPoint = col.transform.position;
+			PlayerPrefs.SetFloat("PlayerX", transform.position.x);
+			PlayerPrefs.SetFloat("PlayerY", transform.position.y);
+			PlayerPrefs.SetFloat("PlayerZ", transform.position.z);
         }
-
-		/*if (col.tag == "TextBox") 
-		{
-			text.SetActive (true);
-			panel.SetActive (true);
-		}*/
     }
-
-	/*void OntTiggerExit2D(Collider2D col){
-		if (col.tag == "TextBox") {
-			text.SetActive (false);
-			panel.SetActive (false);
-		}
-	}*/
 }
